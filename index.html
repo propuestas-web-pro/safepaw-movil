@@ -184,24 +184,34 @@
     }
 
     async function downloadAndMark(videoUrl, filename, videoId, btn) {
+      if (btn.dataset.busy === "1") return;
+      btn.dataset.busy = "1";
       const orig = btn.innerText;
-      btn.innerText = "⏳ Descargando...";
+      btn.innerText = "⏳ Bajando MP4...";
       try {
+        const res = await fetch(videoUrl);
+        const buf = await res.arrayBuffer();
+        const blob = new Blob([buf], { type: "application/octet-stream" });
+        const blobUrl = URL.createObjectURL(blob);
         const a = document.createElement("a");
-        a.href = videoUrl;
+        a.href = blobUrl;
         a.download = filename;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 15000);
+        btn.innerText = "✓ ¡Descargado!";
+        setTimeout(() => {
+          const done = getDoneSet();
+          done.add(videoId);
+          saveDoneSet(done);
+          renderApp(window._MANIFEST);
+        }, 1200);
       } catch (e) {
         window.location.href = videoUrl;
+        btn.dataset.busy = "0";
+        btn.innerText = orig;
       }
-      setTimeout(() => {
-        const done = getDoneSet();
-        done.add(videoId);
-        saveDoneSet(done);
-        renderApp(window._MANIFEST);
-      }, 1500);
     }
 
     function toggleDone(videoId) {
@@ -227,7 +237,7 @@
           <div class="desc-box">${escapeHtml(v.caption)}</div>
           <div class="actions">
             <button class="btn btn-copy" type="button" data-cap="${escapeHtml(v.caption)}">📋 Copiar Texto</button>
-            <a class="btn btn-dl" href="${escapeHtml(v.video_url)}" download="${escapeHtml(v.filename)}" data-id="${escapeHtml(v.id)}">⬇️ Descargar MP4</a>
+            <button class="btn btn-dl" type="button" data-url="${escapeHtml(v.video_url)}" data-fn="${escapeHtml(v.filename)}" data-id="${escapeHtml(v.id)}">⬇️ Descargar MP4</button>
             <button class="btn btn-done-toggle" type="button" data-toggle="${escapeHtml(v.id)}">
               ${isDone ? "↩️ Devolver a pendientes" : "✅ Marcar ya subido a TikTok"}
             </button>
@@ -284,15 +294,14 @@
       document.querySelectorAll(".btn-copy").forEach(btn => {
         btn.addEventListener("click", () => copyTextSafe(btn.getAttribute("data-cap"), btn));
       });
-      document.querySelectorAll(".btn-dl").forEach(a => {
-        a.addEventListener("click", () => {
-          const id = a.getAttribute("data-id");
-          setTimeout(() => {
-            const d = getDoneSet();
-            d.add(id);
-            saveDoneSet(d);
-            renderApp(window._MANIFEST);
-          }, 1800);
+      document.querySelectorAll(".btn-dl").forEach(btn => {
+        btn.addEventListener("click", () => {
+          downloadAndMark(
+            btn.getAttribute("data-url"),
+            btn.getAttribute("data-fn"),
+            btn.getAttribute("data-id"),
+            btn
+          );
         });
       });
       document.querySelectorAll("[data-toggle]").forEach(btn => {
