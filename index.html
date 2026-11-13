@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0b0f14">
+  <title>SafePaw Móvil · Vídeos y Descripciones 24/7</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --card: #141a23;
+      --border: #253041;
+      --text: #f3f6fa;
+      --muted: #93a1b5;
+      --accent: #22c55e;
+      --blue: #3b82f6;
+      --amber: #f59e0b;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      margin: 0; padding: 14px 14px 60px;
+      background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .wrap { max-width: 560px; margin: 0 auto; }
+    .top-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 8px; margin-bottom: 12px;
+    }
+    .brand-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #1b2430; border: 1px solid var(--border);
+      color: var(--text); padding: 10px 16px; border-radius: 999px;
+      font-weight: 800; font-size: 15px;
+    }
+    .cloud-badge {
+      background: rgba(34, 197, 94, 0.14); border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #86efac; padding: 8px 12px; border-radius: 999px;
+      font-size: 12px; font-weight: 700;
+    }
+    .progress-card {
+      background: linear-gradient(135deg, #16202e 0%, #121822 100%);
+      border: 1px solid var(--border); border-radius: 18px;
+      padding: 16px; margin-bottom: 16px;
+    }
+    .day-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+    .day-title { font-size: 20px; font-weight: 800; }
+    .day-sub { font-size: 13px; color: var(--muted); }
+    .missing-banner { margin-top: 6px; font-size: 15px; font-weight: 700; color: #fde68a; }
+    .missing-banner.done { color: #86efac; }
+    .bar-track { height: 8px; background: #232d3b; border-radius: 999px; margin-top: 12px; overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.25s ease; }
+    .section-head {
+      font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--muted); font-weight: 800; margin: 12px 0 10px;
+    }
+    .video-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; padding: 14px; margin-bottom: 16px;
+    }
+    .video-card.done-card { opacity: 0.65; border-color: #1e293b; }
+    .card-top {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; color: var(--muted); margin-bottom: 10px; gap: 6px; flex-wrap: wrap;
+    }
+    .card-tag {
+      font-weight: 800; color: #86efac; background: rgba(34, 197, 94, 0.14);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      padding: 5px 10px; border-radius: 999px; font-size: 12px;
+    }
+    .card-title {
+      font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 10px; line-height: 1.35;
+    }
+    .video-wrap {
+      width: 100%; border-radius: 12px; overflow: hidden; background: #000;
+      margin-bottom: 12px; max-height: 360px; display: flex; justify-content: center;
+    }
+    video { width: 100%; max-height: 360px; object-fit: contain; background: #000; }
+    .desc-label {
+      font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--muted); margin-bottom: 6px; font-weight: 700;
+    }
+    .desc-box {
+      background: #0e131a; border: 1px solid #263142; border-radius: 12px;
+      padding: 12px; font-size: 14.5px; line-height: 1.45; color: #f8fafc;
+      margin-bottom: 12px; user-select: text; word-break: break-word;
+    }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn {
+      min-height: 50px; border: 0; border-radius: 12px; font-size: 15px; font-weight: 800;
+      cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+      gap: 6px; color: #fff; text-decoration: none; text-align: center; padding: 10px 12px;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-copy { background: var(--blue); }
+    .btn-copy.copied { background: #0d9488; }
+    .btn-dl { background: var(--accent); color: #04210f; }
+    .btn-done-toggle {
+      grid-column: 1 / -1; min-height: 40px; font-size: 13px;
+      background: #1e293b; color: #cbd5e1; border: 1px solid #334155;
+    }
+    details.done-wrap {
+      margin-top: 18px; background: #10161e; border: 1px solid var(--border);
+      border-radius: 16px; padding: 12px;
+    }
+    details.done-wrap summary {
+      cursor: pointer; font-weight: 700; font-size: 14px; color: #93c5fd;
+      list-style: none; text-align: center; padding: 4px 0;
+    }
+    .reset-btn {
+      display: block; width: 100%; margin-top: 14px; padding: 10px;
+      background: transparent; border: 1px dashed #334155; color: #94a3b8;
+      border-radius: 10px; font-size: 12px; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top-bar">
+      <div class="brand-pill">🐾 SafePaw · TikTok Móvil</div>
+      <div class="cloud-badge">☁️ Online 24/7 (Sin PC)</div>
+    </div>
+
+    <div class="progress-card">
+      <div class="day-row">
+        <div class="day-title">Tus Vídeos Listos</div>
+        <div class="day-sub" id="queueSummary">Cargando...</div>
+      </div>
+      <div class="missing-banner" id="statusBanner">Copia la descripción y descarga el vídeo en 1 toque</div>
+      <div class="bar-track"><div class="bar-fill" id="barFill"></div></div>
+    </div>
+
+    <div id="pendingList"></div>
+    <div id="completedList"></div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "safepaw_done_videos_v1";
+
+    function getDoneSet() {
+      try {
+        return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+      } catch (e) {
+        return new Set();
+      }
+    }
+
+    function saveDoneSet(setObj) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(setObj)));
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    function copyTextSafe(text, btn) {
+      const done = () => {
+        const orig = btn.innerText;
+        btn.classList.add("copied");
+        btn.innerText = "✓ ¡Copiado!";
+        setTimeout(() => { btn.classList.remove("copied"); btn.innerText = orig; }, 1800);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+      } else {
+        fallbackCopy(text, done);
+      }
+    }
+
+    function fallbackCopy(text, done) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, text.length);
+      try { document.execCommand("copy"); done(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+
+    async function downloadAndMark(videoUrl, filename, videoId, btn) {
+      const orig = btn.innerText;
+      btn.innerText = "⏳ Descargando...";
+      try {
+        const a = document.createElement("a");
+        a.href = videoUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } catch (e) {
+        window.location.href = videoUrl;
+      }
+      setTimeout(() => {
+        const done = getDoneSet();
+        done.add(videoId);
+        saveDoneSet(done);
+        renderApp(window._MANIFEST);
+      }, 1500);
+    }
+
+    function toggleDone(videoId) {
+      const done = getDoneSet();
+      if (done.has(videoId)) done.delete(videoId);
+      else done.add(videoId);
+      saveDoneSet(done);
+      renderApp(window._MANIFEST);
+    }
+
+    function renderCard(v, isDone) {
+      return `
+        <div class="video-card ${isDone ? 'done-card' : ''}">
+          <div class="card-top">
+            <span class="card-tag">⏰ ${escapeHtml(v.time_es)} ES · ${escapeHtml(v.channel_label)}</span>
+            <span>${escapeHtml(v.size_mb)} MB</span>
+          </div>
+          <div class="card-title">${escapeHtml(v.title)}</div>
+          <div class="video-wrap">
+            <video controls playsinline preload="metadata" src="${escapeHtml(v.video_url)}#t=0.3"></video>
+          </div>
+          <div class="desc-label">Descripción + Hashtags para TikTok (1 toque)</div>
+          <div class="desc-box">${escapeHtml(v.caption)}</div>
+          <div class="actions">
+            <button class="btn btn-copy" type="button" data-cap="${escapeHtml(v.caption)}">📋 Copiar Texto</button>
+            <a class="btn btn-dl" href="${escapeHtml(v.video_url)}" download="${escapeHtml(v.filename)}" data-id="${escapeHtml(v.id)}">⬇️ Descargar MP4</a>
+            <button class="btn btn-done-toggle" type="button" data-toggle="${escapeHtml(v.id)}">
+              ${isDone ? "↩️ Devolver a pendientes" : "✅ Marcar ya subido a TikTok"}
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderApp(manifest) {
+      window._MANIFEST = manifest;
+      const videos = manifest.videos || [];
+      const doneSet = getDoneSet();
+      const pending = videos.filter(v => !doneSet.has(v.id));
+      const completed = videos.filter(v => doneSet.has(v.id));
+
+      document.getElementById("queueSummary").innerText =
+        `${pending.length} pendientes · ${completed.length} descargados`;
+
+      const pct = videos.length ? Math.round((completed.length / videos.length) * 100) : 100;
+      document.getElementById("barFill").style.width = pct + "%";
+
+      const banner = document.getElementById("statusBanner");
+      if (pending.length === 0) {
+        banner.className = "missing-banner done";
+        banner.innerText = "✓ ¡Todos los vídeos en cola han sido descargados!";
+      } else {
+        banner.className = "missing-banner";
+        banner.innerText = `Siguiente vídeo listo: ${pending[0].channel_label} (${pending[0].time_es} ES)`;
+      }
+
+      const pendingEl = document.getElementById("pendingList");
+      if (pending.length > 0) {
+        pendingEl.innerHTML = `<div class="section-head">Vídeos pendientes de subir (${pending.length})</div>` +
+          pending.map(v => renderCard(v, false)).join("");
+      } else {
+        pendingEl.innerHTML = "";
+      }
+
+      const compEl = document.getElementById("completedList");
+      if (completed.length > 0) {
+        compEl.innerHTML = `
+          <details class="done-wrap">
+            <summary>📁 Descargados / Ya subidos (${completed.length})</summary>
+            <div style="margin-top:12px;">
+              ${completed.map(v => renderCard(v, true)).join("")}
+            </div>
+            <button class="reset-btn" type="button" id="resetDoneBtn">Mostrar todos como pendientes otra vez</button>
+          </details>
+        `;
+      } else {
+        compEl.innerHTML = "";
+      }
+
+      document.querySelectorAll(".btn-copy").forEach(btn => {
+        btn.addEventListener("click", () => copyTextSafe(btn.getAttribute("data-cap"), btn));
+      });
+      document.querySelectorAll(".btn-dl").forEach(a => {
+        a.addEventListener("click", () => {
+          const id = a.getAttribute("data-id");
+          setTimeout(() => {
+            const d = getDoneSet();
+            d.add(id);
+            saveDoneSet(d);
+            renderApp(window._MANIFEST);
+          }, 1800);
+        });
+      });
+      document.querySelectorAll("[data-toggle]").forEach(btn => {
+        btn.addEventListener("click", () => toggleDone(btn.getAttribute("data-toggle")));
+      });
+      const rBtn = document.getElementById("resetDoneBtn");
+      if (rBtn) {
+        rBtn.addEventListener("click", () => {
+          localStorage.removeItem(STORAGE_KEY);
+          renderApp(window._MANIFEST);
+        });
+      }
+    }
+
+    fetch("manifest.json?t=" + Date.now(), { cache: "no-store" })
+      .then(r => r.json())
+      .then(renderApp)
+      .catch(() => {
+        document.getElementById("statusBanner").innerText = "Error cargando vídeos.";
+      });
+  </script>
+</body>
+</html>
